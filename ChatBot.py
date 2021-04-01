@@ -9,7 +9,16 @@ class ChatBot():
     openweatherkey = "9979899419251cc17ec83e1aaa98ef8f"
 
     urls = {"SPA": "https://football.kulichki.net/spain/",
-            "ENG": "https://football.kulichki.net/england/"}
+            "ENG": "https://football.kulichki.net/england/",
+            "GER": "https://football.kulichki.net/germany/",
+            "ITA": "https://football.kulichki.net/italy/",
+            "FRA": "https://football.kulichki.net/france/",
+            "NET": "https://football.kulichki.net/holland/",
+            "POR": "https://football.kulichki.net/portugal/",
+            "TUR": "https://football.kulichki.net/turkey/",
+            "RUS": "https://football.kulichki.net/ruschamp/"}
+    
+    countries = {"ИСПАНИЯ": "SPA", "АНГЛИЯ": "ENG", "ГЕРМАНИЯ": "GER", "ИТАЛИЯ": "ITA", "ФРАНЦИЯ": "FRA", "НИДЕРЛАНДЫ": "NET", "ПОРТУГАЛИЯ": "POR", "ТУРЦИЯ": "TUR", "РОССИЯ": "RUS"}
 
     keywords = {"greetings": ["HELLO", "HI", "WHAT'S UP", "HEYO", "SUP"],
                 "questions": ["?", "HOW", "WHERE", "WHEN", "WHAT", "WHO"],
