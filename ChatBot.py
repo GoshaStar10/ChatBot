@@ -1,8 +1,8 @@
 from datetime import datetime
 from random import randint
-
 from bs4 import BeautifulSoup
 from requests import get
+from googlesearch import search
 
 
 class ChatBot():
@@ -13,22 +13,24 @@ class ChatBot():
             "GER": "https://football.kulichki.net/germany/",
             "ITA": "https://football.kulichki.net/italy/",
             "FRA": "https://football.kulichki.net/france/",
-            "NET": "https://football.kulichki.net/holland/",
+            "NED": "https://football.kulichki.net/holland/",
             "POR": "https://football.kulichki.net/portugal/",
             "TUR": "https://football.kulichki.net/turkey/",
             "RUS": "https://football.kulichki.net/ruschamp/"}
-    
-    countries = {"ИСПАНИЯ": "SPA", "АНГЛИЯ": "ENG", "ГЕРМАНИЯ": "GER", "ИТАЛИЯ": "ITA", "ФРАНЦИЯ": "FRA", "НИДЕРЛАНДЫ": "NET", "ПОРТУГАЛИЯ": "POR", "ТУРЦИЯ": "TUR", "РОССИЯ": "RUS"}
 
-    keywords = {"greetings": ["HELLO", "HI", "WHAT'S UP", "HEYO", "SUP"],
-                "questions": ["?", "HOW", "WHERE", "WHEN", "WHAT", "WHO"],
-                "weather": ["WEATHER", "COLD", "HOT", "WINDY", "TEMPERATURE", "OVERCAST", "GUSTY"],
-                "time": ["TIME", "CLOCK", "HOUR", "MINUTE", "SECOND"],
+    countries = {"ИСПАНИЯ": "SPA", "АНГЛИЯ": "ENG", "ГЕРМАНИЯ": "GER", "ИТАЛИЯ": "ITA", "ФРАНЦИЯ": "FRA",
+                 "НИДЕРЛАНДЫ": "NED", "ГОЛЛАНДИЯ": "NED", "ПОРТУГАЛИЯ": "POR", "ТУРЦИЯ": "TUR", "РОССИЯ": "RUS"}
+
+    keywords = {"greetings": ["ЗДРАВСТВУЙТЕ", "ПРИВЕТ", "ХАЙ"],
+                "questions": ["?", "КАК", "КОГДА", "ГДЕ", "ЧТО", "КТО"],
+                "weather": ["ПОГОДА", "ХОЛОДНО", "ЖАРКО", "ВЕТРЕНО", "ТЕМПЕРАТУРА", "ПАСМУРНО", "ОБЛАЧНО"],
+                "time": ["ВРЕМЯ", "ЧАСЫ", "ЧАС", "МИНУТА", "СЕКУНДА"],
                 "mood": ["ARE YOU", "DO YOU DO", "IS IT GOING", "ARE YOU DOING", "MOOD"],
                 "color": ["COLOUR", "COLOR", "SHADE", "TINT", "TONE", "TINGE"],
                 "football": ["ФУТБОЛ"],
-                "teams": [],
-                "championships": ["BUNDESLIGA", "BUNDES", "GERMAN", "BPL", "PL", "ENGLISH", "SERIE A", "ITALIAN", "LIGUE 1", "FRENCH", "LA LIGA", "SPANISH", "RUSSIAN"]
+                "countries": ["ИСПАНИЯ", "АНГЛИЯ", "ГЕРМАНИЯ", "ИТАЛИЯ", "ФРАНЦИЯ", "ПОРТУГАЛИЯ",
+                              "НИДЕРЛАНДЫ", "ГОЛЛАНДИЯ", "РОССИЯ", "ТУРЦИЯ"],
+                "teams": []
                 }
 
     answers = {"greetings": ["Hello!", "Hi", "Yo", "Sup", "Ey"],
@@ -36,7 +38,6 @@ class ChatBot():
                "weather": ["It's cold today", "It's hot today", "It's windy today", "Today's temperature is alright ", "It's overcast today", "It's gusty today"],
                "mood": ["I feel good, thank u", "I feel bad ;((", "Nasty bro", "Cool, thx", "I feel sick", "Absolutely awesome"],
                "color": ["I enjoy light blue", "Pure white sounds nice, huh?", "Green, the same as the grass have", "Yellow is not a bad option at all!"],
-               "championships": ["Wait a minute! I'm opening the desired line."]
                }
 
     football_table = {}
@@ -106,7 +107,20 @@ class ChatBot():
         except:
             return "Я не знаю:( Спроси меня позже!"
 
+    def team_text(self, text):
+        words = text.split()
+        result = ""
+        for i in range(len(words)):
+            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II":
+                result += words[i]
+            else:
+                result += words[i].capitalize() + " "
+        result = result.rstrip()
+        return result
+
+
     def set_teams(self):
+        self.keywords["teams"] = []
         try:
             for key in self.football_table.keys():
                 self.keywords["teams"].append(self.football_table[key]["team"].upper())
@@ -116,10 +130,15 @@ class ChatBot():
     def get_teams(self):
         text = "Я могу рассказать про команды: "
         for team in self.keywords["teams"]:
-            text += team.capitalize() + ", "
-        text += '.'
+            text += self.team_text(team) + ", "
+        text = text[:-2] + "."
         return text
 
+    def get_links(self, text):
+        links = ""
+        for link in search(str(text), num_results=5, lang="ru"):
+            links += link + "\n"
+        return "Предлагаю посмотреть это в интернете по ссылкам:\n" + links
 
     def clear_text(self, text):
         new_text = ""
@@ -142,11 +161,17 @@ class ChatBot():
         elif "weather" in keys:
             return self.get_weather()
         elif "football" in keys:
-            self.parse_site(self.urls["SPA"])
+            return "Я могу рассказать про чемпионаты Испании, " \
+                   "Англии, Германии, Италии, Франции, Португалии, " \
+                   "Нидерландов (Голландии), России, Турции. Напишите страну."
+        elif "countries" in keys:
+            self.parse_site(self.urls[self.countries[text[0]]])
             self.set_teams()
             return self.get_teams()
         elif "teams" in keys:
             return self.get_info(text[0])
+        elif len(keys) == 0:
+            return self.get_links(text)
         else:
             for key in keys:
                 answer += self.answers[key][randint(0, len(self.answers[key])) - 1] + '\n'
