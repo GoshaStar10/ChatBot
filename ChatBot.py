@@ -111,7 +111,7 @@ class ChatBot():
         words = text.split()
         result = ""
         for i in range(len(words)):
-            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II" or words[i] == "Сент-Этьен":
+            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II" or words[i] == "Сент-Этьен" or words[i] == "АЗ" or words[i] == "РКС" or words[i] == "ВВВ" or words[i] == "АДО" or words[i] == "ЦСКА":
                 result += words[i]
             else:
                 result += words[i].capitalize() + " "
