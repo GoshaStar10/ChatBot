@@ -36,7 +36,7 @@ class ChatBot():
     answers = {"greetings": ["Привет!", "Салют", "Йоу", "Здравствуй", "Доброго времени суток!"],
                "questions": ["Чемпионат какой страны Вас интересует?"],
                "weather": ["Сегодня прохладно", "Сегодня очень жарко", "На улице ветрено", "На улице вполне комфортная температура", "Сегодня пасмурно", "Облачно"],
-               "mood": [Я чувствую себя прекрасно, спасибо!", "Если честно, так себе;((", "Настроение просто супер!", "Клёво!", "Просто великолепно!"],
+               "mood": ["Я чувствую себя прекрасно, спасибо!", "Если честно, так себе;((", "Настроение просто супер!", "Клёво!", "Просто великолепно!"],
                "color": ["Мне нравится светло-голубой", "Ярко-жёлтый выглядит отлично, да?", "Зелёный, как у травы", "Лимонный цвет выглядит потрясающе!"],
                }
 
@@ -97,13 +97,13 @@ class ChatBot():
             while self.football_table[position]["team"] != team:
                 position += 1
             return f"Команда {self.football_table[position]['team']}" \
-                   f" идет на {position} месте. " \
-                   f"Сыграла {self.football_table[position]['games']} матчей. " \
-                   f"Побед: {self.football_table[position]['wins']}, " \
-                   f"ничьи: {self.football_table[position]['draws']}, " \
-                   f"поражения: {self.football_table[position]['loses']}. " \
-                   f"Набрала {self.football_table[position]['points']} очков. " \
-                   f"Разница забитых и пропущенных голов {self.football_table[position]['goal_difference']}."
+                   f" идет на {position} месте, приняв участие " \
+                   f"в {self.football_table[position]['games']} матчах,: " \
+                   f"в {self.football_table[position]['wins']} из которых она одержала победу, " \
+                   f"в {self.football_table[position]['draws']} команды разошлись с миром, " \
+                   f"а в {self.football_table[position]['loses']} матчах уезжала без изменений в графе очков. " \
+                   f"Итого, команда {self.football_table[position]['team']} имеет в своём активе {self.football_table[position]['points']} очков. " \
+                   f"Разница забитых и пропущенных равняется {self.football_table[position]['goal_difference']}."
         except:
             return "Я не знаю:( Спроси меня позже!"
 
@@ -111,7 +111,7 @@ class ChatBot():
         words = text.split()
         result = ""
         for i in range(len(words)):
-            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II":
+            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II" or words[i] == "Сент-Этьен":
                 result += words[i]
             else:
                 result += words[i].capitalize() + " "
@@ -138,7 +138,7 @@ class ChatBot():
         links = ""
         for link in search(str(text), num_results=5, lang="ru"):
             links += link + "\n"
-        return "Предлагаю посмотреть это в интернете по ссылкам:\n" + links
+        return "Я не знаю ответа на этот вопрос, но Вы можете посмотреть, что по этому поводу пишут в интернете:\n" + links
 
     def clear_text(self, text):
         new_text = ""
@@ -163,7 +163,7 @@ class ChatBot():
         elif "football" in keys:
             return "Я могу рассказать про чемпионаты Испании, " \
                    "Англии, Германии, Италии, Франции, Португалии, " \
-                   "Нидерландов (Голландии), России, Турции. Напишите страну."
+                   "Нидерландов (Голландии), России, Турции. Чемпионат какой страны Вас интересует?"
         elif "countries" in keys:
             self.parse_site(self.urls[self.countries[text[0]]])
             self.set_teams()
