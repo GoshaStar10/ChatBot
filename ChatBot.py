@@ -21,23 +21,23 @@ class ChatBot():
     countries = {"ИСПАНИЯ": "SPA", "АНГЛИЯ": "ENG", "ГЕРМАНИЯ": "GER", "ИТАЛИЯ": "ITA", "ФРАНЦИЯ": "FRA",
                  "НИДЕРЛАНДЫ": "NED", "ГОЛЛАНДИЯ": "NED", "ПОРТУГАЛИЯ": "POR", "ТУРЦИЯ": "TUR", "РОССИЯ": "RUS"}
 
-    keywords = {"greetings": ["ЗДРАВСТВУЙТЕ", "ПРИВЕТ", "ХАЙ"],
+    keywords = {"greetings": ["ЗДРАВСТВУЙТЕ", "ПРИВЕТ", "ХАЙ", "САЛЮТ"],
                 "questions": ["?", "КАК", "КОГДА", "ГДЕ", "ЧТО", "КТО"],
                 "weather": ["ПОГОДА", "ХОЛОДНО", "ЖАРКО", "ВЕТРЕНО", "ТЕМПЕРАТУРА", "ПАСМУРНО", "ОБЛАЧНО"],
                 "time": ["ВРЕМЯ", "ЧАСЫ", "ЧАС", "МИНУТА", "СЕКУНДА"],
-                "mood": ["ARE YOU", "DO YOU DO", "IS IT GOING", "ARE YOU DOING", "MOOD"],
-                "color": ["COLOUR", "COLOR", "SHADE", "TINT", "TONE", "TINGE"],
+                "mood": ["ДЕЛА", "НАСТРОЕНИЕ", "ПРОШЁЛ ТВОЙ ДЕНЬ", "ЖИЗНЬ"],
+                "color": ["ЦВЕТ", "ОТТЕНОК"],
                 "football": ["ФУТБОЛ"],
                 "countries": ["ИСПАНИЯ", "АНГЛИЯ", "ГЕРМАНИЯ", "ИТАЛИЯ", "ФРАНЦИЯ", "ПОРТУГАЛИЯ",
                               "НИДЕРЛАНДЫ", "ГОЛЛАНДИЯ", "РОССИЯ", "ТУРЦИЯ"],
                 "teams": []
                 }
 
-    answers = {"greetings": ["Hello!", "Hi", "Yo", "Sup", "Ey"],
-               "questions": ["What championship would you like to see?"],
-               "weather": ["It's cold today", "It's hot today", "It's windy today", "Today's temperature is alright ", "It's overcast today", "It's gusty today"],
-               "mood": ["I feel good, thank u", "I feel bad ;((", "Nasty bro", "Cool, thx", "I feel sick", "Absolutely awesome"],
-               "color": ["I enjoy light blue", "Pure white sounds nice, huh?", "Green, the same as the grass have", "Yellow is not a bad option at all!"],
+    answers = {"greetings": ["Привет!", "Салют", "Йоу", "Здравствуй", "Доброго времени суток!"],
+               "questions": ["Чемпионат какой страны Вас интересует?"],
+               "weather": ["Сегодня прохладно", "Сегодня очень жарко", "На улице ветрено", "На улице вполне комфортная температура", "Сегодня пасмурно", "Облачно"],
+               "mood": [Я чувствую себя прекрасно, спасибо!", "Если честно, так себе;((", "Настроение просто супер!", "Клёво!", "Просто великолепно!"],
+               "color": ["Мне нравится светло-голубой", "Ярко-жёлтый выглядит отлично, да?", "Зелёный, как у травы", "Лимонный цвет выглядит потрясающе!"],
                }
 
     football_table = {}
