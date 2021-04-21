@@ -21,12 +21,12 @@ class ChatBot():
     countries = {"ИСПАНИЯ": "SPA", "АНГЛИЯ": "ENG", "ГЕРМАНИЯ": "GER", "ИТАЛИЯ": "ITA", "ФРАНЦИЯ": "FRA",
                  "НИДЕРЛАНДЫ": "NED", "ГОЛЛАНДИЯ": "NED", "ПОРТУГАЛИЯ": "POR", "ТУРЦИЯ": "TUR", "РОССИЯ": "RUS"}
 
-    keywords = {"greetings": ["ЗДРАВСТВУЙТЕ", "ПРИВЕТ", "ХАЙ", "ЗДРАВСТВУЙ", "ДОБРОГО ВРЕМЕНИ СУТОК"],
+    keywords = {"greetings": ["ЗДРАВСТВУЙТЕ", "ПРИВЕТ", "ХАЙ", "ЗДРАВСТВУЙ"],
                 "questions": ["?", "КАК", "КОГДА", "ГДЕ", "ЧТО", "КТО"],
                 "weather": ["ПОГОДА", "ХОЛОДНО", "ЖАРКО", "ВЕТРЕНО", "ТЕМПЕРАТУРА", "ПАСМУРНО", "ОБЛАЧНО"],
                 "time": ["ВРЕМЯ", "ЧАСЫ", "ЧАС", "МИНУТА", "СЕКУНДА"],
-                "mood": ["ДЕЛА", "НАСТРОЕНИЕ", "ПРОШЁЛ ТВОЙ ДЕНЬ", "ЖИЗНЬ"],
-                "color": ["ЦВЕТ", "ОТТЕНОК"],
+                "mood": ["ARE YOU", "DO YOU DO", "IS IT GOING", "ARE YOU DOING", "MOOD"],
+                "color": ["COLOUR", "COLOR", "SHADE", "TINT", "TONE", "TINGE"],
                 "football": ["ФУТБОЛ"],
                 "countries": ["ИСПАНИЯ", "АНГЛИЯ", "ГЕРМАНИЯ", "ИТАЛИЯ", "ФРАНЦИЯ", "ПОРТУГАЛИЯ",
                               "НИДЕРЛАНДЫ", "ГОЛЛАНДИЯ", "РОССИЯ", "ТУРЦИЯ"],
@@ -75,7 +75,8 @@ class ChatBot():
     def get_weather(self):
         city = "Saint Petersburg, RU"
         try:
-            rqst = get("http://api.openweathermap.org/data/2.5/find", params={'q': city, 'type': 'like', 'units': 'metric', 'APPID': self.openweatherkey})
+            rqst = get("http://api.openweathermap.org/data/2.5/find",
+                       params={'q': city, 'type': 'like', 'units': 'metric', 'APPID': self.openweatherkey})
             result = rqst.json()["list"][0]
             temperature_real = result["main"]["temp"]
             temperature_feel = result["main"]["feels_like"]
@@ -84,8 +85,8 @@ class ChatBot():
             wind_speed = result["wind"]["speed"]
             rain = "Сейчас нет дождя" if result["rain"] == None else "Дождливо."
             description = result["weather"][0]["description"].capitalize()
-            weather = f"Сейчас в городе {city} температура равна {temperature_real} градусов (ощущается как {temperature_feel}). Давление равно " \
-                      f"{pressure} Па. Влажность равна {humidity}%. Скорость ветра превышает {wind_speed} м/с. {rain}."
+            weather = f"Сейчас в городе Санкт-Петербург температура равна {temperature_real} градусов (ощущается как {temperature_feel}). Давление равно " \
+                      f"{pressure}{chr(160)}Па. Влажность равна{chr(160)}{humidity}%. Скорость ветра превышает{chr(160)}{wind_speed}{chr(160)}м/с. {rain}."
             return weather
         except:
             return "К сожалению, я не могу пока ответить на Ваш вопрос. Обратитесь, пожалуйста, позже!"
@@ -97,13 +98,13 @@ class ChatBot():
             while self.football_table[position]["team"] != team:
                 position += 1
             return f"Команда {self.football_table[position]['team']}" \
-                   f" идет на {position} месте, приняв участие " \
-                    f"в {self.football_table[position]['games']} матчах: " \
-                    f"в {self.football_table[position]['wins']} из которых она одержала победу, " \
-                    f"в {self.football_table[position]['draws']} команды разошлись с миром, " \
-                    f"а в {self.football_table[position]['loses']} матчах уезжала без изменений в графе очков. " \
-                    f"Итого, команда {self.football_table[position]['team']} имеет в своём активе {self.football_table[position]['points']} очков. " \
-                    f"Разница забитых и пропущенных равняется {self.football_table[position]['goal_difference']}."
+                   f" идет на {position} месте. " \
+                   f"Сыграла {self.football_table[position]['games']} матчей. " \
+                   f"Побед: {self.football_table[position]['wins']}, " \
+                   f"ничьи: {self.football_table[position]['draws']}, " \
+                   f"поражения: {self.football_table[position]['loses']}. " \
+                   f"Набрала {self.football_table[position]['points']} очков. " \
+                   f"Разница забитых и пропущенных голов {self.football_table[position]['goal_difference']}."
         except:
             return "К сожалению, я не могу пока ответить на Ваш вопрос. Обратитесь, пожалуйста, позже!"
 
@@ -111,7 +112,7 @@ class ChatBot():
         words = text.split()
         result = ""
         for i in range(len(words)):
-            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II" or words[i] == "Сент-Этьен" or words[i] == "АЗ" or words[i] == "РКС" or words[i] == "ВВВ" or words[i] == "АДО" or words[i] == "ЦСКА":
+            if words[i] == "ПСВ" or words[i] == "ПСЖ" or words[i] == "II":
                 result += words[i]
             else:
                 result += words[i].capitalize() + " "
@@ -163,7 +164,7 @@ class ChatBot():
         elif "football" in keys:
             return "Я могу рассказать про чемпионаты Испании, " \
                    "Англии, Германии, Италии, Франции, Португалии, " \
-                   "Нидерландов (Голландии), России, Турции. Чемпионат какой страны Вас интересует?"
+                   "Нидерландов (Голландии), России, Турции. Напишите страну."
         elif "countries" in keys:
             self.parse_site(self.urls[self.countries[text[0]]])
             self.set_teams()
